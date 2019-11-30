@@ -178,6 +178,15 @@ def survey_add():
   print(slider_q1)
   return redirect('/')
 
+@app.route('/event-creation')
+def event_creation():
+  return render_template("event_creation.html")
+
+@app.route('/event-creation-add', methods=['POST'])
+def event_creation_add():
+  #Insert data into table 
+  return redirect('/')
+
 #
 # This is an example of a different path.  You can see it at:
 #
