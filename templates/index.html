@@ -1,5 +1,16 @@
 <html>
+<head>
+  <style>
+    .event-container {
+      background-color: powderblue;
+    }
+  </style>
+</head>
 <body>
-hello world!
+<ul>
+{% for event in events %}
+<div class = "event-container">{{event.name}}</div>
+{% endfor %}
+</ul>
 </body>
 </html>
