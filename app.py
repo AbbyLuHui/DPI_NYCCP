@@ -34,13 +34,13 @@ app = Flask(__name__, template_folder=tmpl_dir)
 #
 #     DATABASEURI = "postgresql://biliris:foobar@104.196.18.7/w4111"
 #
-# DATABASEURI = "postgresql://yw3241:7276@34.74.165.156/proj1part2"
-
+DATABASEURI = "mysql+pymysql://root:root@localhost/dpifall2019"
+#
 
 #
 # This line creates a database engine that knows how to connect to the URI above.
 #
-# engine = create_engine(DATABASEURI)
+engine = create_engine(DATABASEURI)
 
 #
 # Example of running queries in your database
@@ -56,12 +56,12 @@ def before_request():
 
   The variable g is globally accessible.
   """
-  # try:
-  #   g.conn = engine.connect()
-  # except:
-  #   print "uh oh, problem connecting to database"
-  #   import traceback; traceback.print_exc()
-  #   g.conn = None
+  try:
+    g.conn = engine.connect();
+  except:
+    print ("uh oh, problem connecting to database")
+    import traceback; traceback.print_exc()
+    conn = None
 
 @app.teardown_request
 def teardown_request(exception):
@@ -69,10 +69,10 @@ def teardown_request(exception):
   At the end of the web request, this makes sure to close the database connection.
   If you don't, the database could run out of memory!
   """
-  # try:
-  #   g.conn.close()
-  # except Exception as e:
-  #   pass
+  try:
+    g.conn.close()
+  except Exception as e:
+    pass
 
 #
 # @app.route is a decorator around index() that means:
@@ -87,6 +87,9 @@ def teardown_request(exception):
 # see for routing: http://flask.pocoo.org/docs/0.10/quickstart/#routing
 # see for decorators: http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
 #
+def vanilla(lst):
+    return lst;
+
 @app.route('/')
 def index():
   """
@@ -98,6 +101,8 @@ def index():
 
   See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
   """
+  events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
+  return render_template("index.html", events=events)
 
   # DEBUG: this is debugging code to see what request looks like
   # print request.args
@@ -149,7 +154,7 @@ def index():
       return render_template('login.html')
   else:
       return render_template("index.html")
-  
+
 @app.route('/login', methods=['POST'])
 def do_admin_login():
     if request.form['password'] == 'password' and request.form['username'] == 'admin':
@@ -157,11 +162,22 @@ def do_admin_login():
     else:
         flash('wrong password!')
     return index()
-    
+
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
     return index()
+
+@app.route('/survey')
+def survey():
+  return render_template("survey.html")
+>>>>>>> ff260714f4d7ca28f3cd20647eb28516cf01ae0c
+
+@app.route('/survey-add', methods=['POST'])
+def survey_add():
+  slider_q1 = request.form['social']
+  print(slider_q1)
+  return redirect('/')
 
 #
 # This is an example of a different path.  You can see it at:
@@ -213,7 +229,10 @@ if __name__ == "__main__":
 
     HOST, PORT = host, port
     print ("running on %s:%d" % (HOST, PORT))
+<<<<<<< HEAD
     app.secret_key = os.urandom(12)
+=======
+>>>>>>> ff260714f4d7ca28f3cd20647eb28516cf01ae0c
     app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
 
 
