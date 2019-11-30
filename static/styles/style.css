@@ -65,12 +65,15 @@ box-shadow: none;
 transition: 0.25s;
 display: block;
 width: 250px;
-margin: 0 auto;
+margin: 10px auto;
 }
 
 .btn:hover {
 background-color: #2980B9;
 }
+
+
+
 
 .login-link {
 font-size: 12px;
