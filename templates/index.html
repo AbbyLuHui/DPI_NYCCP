@@ -1,16 +1,22 @@
 <html>
 <head>
   <style>
-    .event-container {
+    .events {
+      background-color: grey;
+      margin: 2em 4em;
+    }
+    .event {
       background-color: powderblue;
+      margin: 1em 2em;
+      border: solid 0.1em white;
     }
   </style>
 </head>
 <body>
-<ul>
+<div class = "events">
 {% for event in events %}
-<div class = "event-container">{{event.name}}</div>
+<div class = "event">{{event.name}}</div>
 {% endfor %}
-</ul>
+</div>
 </body>
 </html>
