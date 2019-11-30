@@ -34,13 +34,13 @@ app = Flask(__name__, template_folder=tmpl_dir)
 #
 #     DATABASEURI = "postgresql://biliris:foobar@104.196.18.7/w4111"
 #
-DATABASEURI = "postgresql://yw3241:7276@34.74.165.156/proj1part2"
+# DATABASEURI = "postgresql://yw3241:7276@34.74.165.156/proj1part2"
 
 
 #
 # This line creates a database engine that knows how to connect to the URI above.
 #
-engine = create_engine(DATABASEURI)
+# engine = create_engine(DATABASEURI)
 
 #
 # Example of running queries in your database
@@ -56,12 +56,12 @@ def before_request():
 
   The variable g is globally accessible.
   """
-  try:
-    g.conn = engine.connect()
-  except:
-    print "uh oh, problem connecting to database"
-    import traceback; traceback.print_exc()
-    g.conn = None
+  # try:
+  #   g.conn = engine.connect()
+  # except:
+  #   print "uh oh, problem connecting to database"
+  #   import traceback; traceback.print_exc()
+  #   g.conn = None
 
 @app.teardown_request
 def teardown_request(exception):
@@ -69,10 +69,10 @@ def teardown_request(exception):
   At the end of the web request, this makes sure to close the database connection.
   If you don't, the database could run out of memory!
   """
-  try:
-    g.conn.close()
-  except Exception as e:
-    pass
+  # try:
+  #   g.conn.close()
+  # except Exception as e:
+  #   pass
 
 #
 # @app.route is a decorator around index() that means:
@@ -100,17 +100,17 @@ def index():
   """
 
   # DEBUG: this is debugging code to see what request looks like
-  print request.args
+  # print request.args
 
 
   #
   # example of a database query
   #
-  cursor = g.conn.execute("SELECT name FROM test")
-  names = []
-  for result in cursor:
-    names.append(result['name'])  # can also be accessed using result[0]
-  cursor.close()
+  # cursor = g.conn.execute("SELECT name FROM test")
+  # names = []
+  # for result in cursor:
+  #   names.append(result['name'])  # can also be accessed using result[0]
+  # cursor.close()
 
   #
   # Flask uses Jinja templates, which is an extension to HTML where you can
@@ -138,14 +138,14 @@ def index():
   #     <div>{{n}}</div>
   #     {% endfor %}
   #
-  context = dict(data = names)
+  # context = dict(data = names)
 
 
   #
   # render_template looks in the templates/ folder for files.
   # for example, the below file reads template/index.html
   #
-  return render_template("index.html", **context)
+  return render_template("index.html")
 
 #
 # This is an example of a different path.  You can see it at:
@@ -155,23 +155,23 @@ def index():
 # Notice that the function name is another() rather than index()
 # The functions for each app.route need to have different names
 #
-@app.route('/another')
-def another():
-  return render_template("another.html")
+# @app.route('/another')
+# def another():
+#   return render_template("another.html")
 
 
 # Example of adding new data to the database
-@app.route('/add', methods=['POST'])
-def add():
-  name = request.form['name']
-  g.conn.execute('INSERT INTO test(name) VALUES (\'' + name + '\');')
-  return redirect('/')
+# @app.route('/add', methods=['POST'])
+# def add():
+#   name = request.form['name']
+#   g.conn.execute('INSERT INTO test(name) VALUES (\'' + name + '\');')
+#   return redirect('/')
 
 
-@app.route('/login')
-def login():
-    abort(401)
-    this_is_never_executed()
+# @app.route('/login')
+# def login():
+#     abort(401)
+#     this_is_never_executed()
 
 
 if __name__ == "__main__":
