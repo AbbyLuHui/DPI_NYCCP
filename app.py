@@ -159,8 +159,8 @@ def index():
 def do_admin_login():
     if request.form['password'] == 'password' and request.form['username'] == 'admin':
         session['logged_in'] = True
-    else:
-        flash('wrong password!')
+    #else:
+        #flash('wrong password!')
     return index()
 
 @app.route("/logout")
@@ -171,7 +171,6 @@ def logout():
 @app.route('/survey')
 def survey():
   return render_template("survey.html")
->>>>>>> ff260714f4d7ca28f3cd20647eb28516cf01ae0c
 
 @app.route('/survey-add', methods=['POST'])
 def survey_add():
@@ -229,10 +228,7 @@ if __name__ == "__main__":
 
     HOST, PORT = host, port
     print ("running on %s:%d" % (HOST, PORT))
-<<<<<<< HEAD
     app.secret_key = os.urandom(12)
-=======
->>>>>>> ff260714f4d7ca28f3cd20647eb28516cf01ae0c
     app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
 
 
