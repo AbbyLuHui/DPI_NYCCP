@@ -102,7 +102,12 @@ def index():
   See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
   """
   events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
-  return render_template("index.html", events=events)
+  #return render_template("index.html", events=events)
+  if not session.get('logged_in'):
+      return render_template('login.html')
+  else:
+      print("Rendering index page")
+      return render_template("index.html", events=events)
 
   # DEBUG: this is debugging code to see what request looks like
   # print request.args
@@ -150,17 +155,14 @@ def index():
   # render_template looks in the templates/ folder for files.
   # for example, the below file reads template/index.html
   #
-  if not session.get('logged_in'):
-      return render_template('login.html')
-  else:
-      return render_template("index.html")
+
 
 @app.route('/login', methods=['POST'])
 def do_admin_login():
     if request.form['password'] == 'password' and request.form['username'] == 'admin':
         session['logged_in'] = True
-    #else:
-        #flash('wrong password!')
+    else:
+        flash('wrong password!')
     return index()
 
 @app.route("/logout")
