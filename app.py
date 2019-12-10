@@ -16,6 +16,7 @@ Read about it online.
 
 import os
 from sqlalchemy import *
+from sqlalchemy import exc
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response, session, flash, abort
 from dotenv import load_dotenv
@@ -44,7 +45,7 @@ DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.209.244/dpifall2019"
 #
 # This line creates a database engine that knows how to connect to the URI above.
 #
-#engine = create_engine(DATABASEURI)
+engine = create_engine(DATABASEURI)
 
 #
 # Example of running queries in your database
@@ -62,7 +63,7 @@ def before_request():
   """
   try:
     pass
-    #g.conn = engine.connect();
+    g.conn = engine.connect();
   except:
     print ("uh oh, problem connecting to database")
     import traceback; traceback.print_exc()
@@ -76,7 +77,7 @@ def teardown_request(exception):
   """
   try:
     pass
-    #g.conn.close()
+    g.conn.close()
   except Exception as e:
     pass
 
@@ -105,7 +106,7 @@ numppl = 40
 
 @app.route('/event/<eid>')
 def eventrender(eid):
-  # use eid to query event in sql 
+  events = list(g.conn.execute(text("select * from event where eid = :eid"), eid=eid))
   return render_template("event.html", events = events, numppl = numppl)
 
 @app.route('/')
@@ -201,7 +202,7 @@ def do_login():
     session['logged_in'] = True
     session['uid'] = int(result[0]['uid'])
 
-    return index()
+    return redirect('/')
 
 # def do_admin_login():
 #     if request.form['password'] == 'password' and request.form['username'] == 'admin':
