@@ -4,11 +4,11 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'styles/style.css') }}">
 </head>
 <body>
-<form action="/login" method="POST">
+<form action="/signup-post" method="POST">
 <div class="login">
 <div class="login-screen">
 <div class="app-title">
-<h1>Login</h1>
+<h1>Sign up</h1>
 </div>
 <div class="login-form">
 <div class="control-group">
@@ -17,10 +17,10 @@
 <div class="control-group">
   <input type="password" class="login-field" value="" placeholder="password" name="password">
 <label class="login-field-icon fui-lock" for="login-pass"></label></div>
-<input type="submit" value="Log in" class="btn btn-primary btn-large btn-block">
+<input type="submit" value="Create Account" class="btn btn-primary btn-large btn-block">
 </form>
-<form action="/signup" method="GET">
-  <input type="submit" value="Create Account" class="btn btn-primary btn-small btn-block">
+<form action="/" method="GET">
+  <input type="submit" value="Login" class="btn btn-primary btn-small btn-block">
 </form>
 </div>
 </div>
