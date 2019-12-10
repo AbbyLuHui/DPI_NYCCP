@@ -157,7 +157,7 @@ def index():
               event_proxy[i]['days'] = diff.days
               event_proxy[i]['hours'] = diff.seconds // 3600
 
-      user = next(g.conn.execute(text('select * from user where uid = :uid'), uid=session['uid']))
+      user = g.conn.execute(text('select * from user where uid = :uid'), uid=session['uid']).fetchone()
       return render_template("index.html", headline=event_proxy[0], events=event_proxy[1:], user=user)
 
   # DEBUG: this is debugging code to see what request looks like
