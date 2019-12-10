@@ -21,6 +21,7 @@ from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response, session, flash, abort
 from dotenv import load_dotenv
 import datetime
+from collaborative_filtering import cofi
 
 #load_dotenv()
 
@@ -94,8 +95,11 @@ def teardown_request(exception):
 # see for routing: http://flask.pocoo.org/docs/0.10/quickstart/#routing
 # see for decorators: http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
 #
-def get_rec(lst):
-    return lst;
+def get_rec(lst, user):
+    userid = 
+    reclst = cofi(user)
+
+    return reclst
 
 events = [
     {'eid': '1', 'name': "Meal Grabbing", 'location': "lerner", 'time':"1 am", 'category': "Food", 'description': "Trying out new restaurants"},
@@ -132,7 +136,7 @@ def index():
       # events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
       events = get_rec(list(g.conn.execute(text("select * from event e where not exists (select * from rsvp r where " +
                                                 "r.eid = e.eid and r.uid = :uid) and not exists (select * from reject r2 where r2.eid = e.eid and r2.uid = :uid);"),
-                                                uid = int(session['uid']))))
+                                                uid = int(session['uid']))), int(session['uid']))
       print("========================" + str(len(events)))
       event_proxy = []
 
