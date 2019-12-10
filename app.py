@@ -40,7 +40,7 @@ DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.209.158/dpifall2019"
 #
 # This line creates a database engine that knows how to connect to the URI above.
 #
-engine = create_engine(DATABASEURI)
+#engine = create_engine(DATABASEURI)
 
 #
 # Example of running queries in your database
@@ -57,7 +57,8 @@ def before_request():
   The variable g is globally accessible.
   """
   try:
-    g.conn = engine.connect();
+    pass
+    #g.conn = engine.connect();
   except:
     print ("uh oh, problem connecting to database")
     import traceback; traceback.print_exc()
@@ -70,7 +71,8 @@ def teardown_request(exception):
   If you don't, the database could run out of memory!
   """
   try:
-    g.conn.close()
+    pass
+    #g.conn.close()
   except Exception as e:
     pass
 
@@ -90,6 +92,15 @@ def teardown_request(exception):
 def vanilla(lst):
     return lst;
 
+events = [
+    {'eid': '1', 'name': "bbq", 'location': "lerner", 'time':"1 am", 'category': "food", 'description': "free food"}
+  ]
+numppl = 40
+
+@app.route('/event')
+def eventrender():
+  return render_template("event.html", events = events, numppl = numppl)
+
 @app.route('/')
 def index():
   """
@@ -101,13 +112,15 @@ def index():
 
   See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
   """
-  events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
-  #return render_template("index.html", events=events)
+  #events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
+  
+
+  return render_template("index.html", events=events, numppl = numppl)
   if not session.get('logged_in'):
       return render_template('login.html')
   else:
       print("Rendering index page")
-      return render_template("index.html", events=events)
+      return render_template("index.html")
 
   # DEBUG: this is debugging code to see what request looks like
   # print request.args
