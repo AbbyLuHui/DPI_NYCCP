@@ -6,18 +6,12 @@ import math
 
 
 # mysql -pdpi -udpi -h 129.236.209.244
-def cofi(myid):
-    userinfo = 
 
-    raw = 
-
-
-
-
+def cofi(potev,myid):
     data = pd.read_csv('dummy1.csv')
     #print(data)
- #   myid = 16
     myrating = data[data['uid'] == myid]['init_rating'].tolist()
+    eventseq = data[data['uid'] == myid]['eid'].tolist()
     #print(myrating)
 
     data = data[['uid', 'eid', 'init_rating']]
@@ -42,11 +36,13 @@ def cofi(myid):
 
 
     rateList = []
-    for i in range (1,11):
-        pred = algo.predict(uid = myid, iid = i)
-        score = pred.est + math.sqrt(myrating[i-1])
+    for i in range (1,27):
+        pred = algo.predict(uid = myid, iid = eventseq[i-1])
+        # print(pred)
+        score = pred.est + 1.2*myrating[i-1]
         rateList.append(score)
-    copyList = rateList.copy()
+
+    copyList = rateList.copy()    #rating of events 17, 18, 19,...26, 1, 2, 3..,16
     rateList.sort(reverse = True)
 
     #print(copyList)
@@ -54,13 +50,19 @@ def cofi(myid):
 
 
     rec = []
-    for i in range (0,4):
-        rec.append(copyList.index(rateList[i])+1)
-    #print(rec)
+    for i in range (0,26):
+        curev = eventseq[copyList.index(rateList[i])]
+        if (curev in evs):
+            rec.append(curev)
+            if len(rec) == 4:
+                break
 
+    #print(rec)
     return rec
 
-
+ 
+#evs = [20,21,22,24,25,14]
+#cofi(evs,14)
 
 
 # https://blog.cambridgespark.com/tutorial-practical-introduction-to-recommender-systems-dbe22848392b

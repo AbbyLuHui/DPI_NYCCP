@@ -95,11 +95,8 @@ def teardown_request(exception):
 # see for routing: http://flask.pocoo.org/docs/0.10/quickstart/#routing
 # see for decorators: http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
 #
-def get_rec(lst, user):
-    userid = 
-    reclst = cofi(user)
-
-    return reclst
+def get_rec(eventlist, user):
+    return cofi(eventlist, user)
 
 events = [
     {'eid': '1', 'name': "Meal Grabbing", 'location': "lerner", 'time':"1 am", 'category': "Food", 'description': "Trying out new restaurants"},
@@ -146,7 +143,7 @@ def index():
                                                 "r.eid = e.eid and r.uid = :uid) and not exists (select * from reject r2 where r2.eid = e.eid and r2.uid = :uid);"),
                                                 uid = int(session['uid'])))
 
-      event_ids = get_rec([sub['eid'] for sub in events])
+      event_ids = get_rec([sub['eid'] for sub in events],int(session['uid']))
       print("========================" + str(len(events)))
       event_proxy = []
 
