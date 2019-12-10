@@ -39,7 +39,7 @@ app = Flask(__name__, template_folder=tmpl_dir)
 #
 #     DATABASEURI = "postgresql://biliris:foobar@104.196.18.7/w4111"
 #
-DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.209.244/dpifall2019"
+DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.208.174/dpifall2019"
 #
 
 #
@@ -324,7 +324,7 @@ def profile(uid):
         # return render_template('error.html', msg = str(err.__dict__['orig']))
 
     return render_template("profile.html", user=user, created=created, rsvped=rsvped)
-    
+
 if __name__ == "__main__":
   import click
 
