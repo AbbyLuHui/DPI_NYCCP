@@ -17,8 +17,9 @@
   			if ($(this).val() == 'all'){
   				$(".event").show();
   			} else {
-  				$(".event").hide();
+          $(".event").hide();
   				$("." + $(this).val()).show();
+
   			}
   		});
   		$("#time-select").change(function() {
@@ -68,8 +69,8 @@
             <div class="container">
                 <div class="row">
                   {% for event in events %}
-                    <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div class="single_recepie text-center event {{event.category}}">
+                    <div class="col-xl-4 col-lg-4 col-md-6 event {{event.category}}">
+                        <div class="single_recepie text-center">
                             <div class="recepie_thumb">
                               <a href="/event/{{event.eid}}">
                                 <img src={{event.img}} alt="">
