@@ -5,11 +5,13 @@ import math
 # import matplotlib.pyplot as plt
 
 
+# mysql -pdpi -udpi -h 129.236.209.244
+
 data = pd.read_csv('dummy1.csv')
-# print(data)
+#print(data)
 myid = 16
 myrating = data[data['uid'] == myid]['init_rating'].tolist()
-print(myrating)
+#print(myrating)
 
 data = data[['uid', 'eid', 'init_rating']]
 
@@ -40,14 +42,14 @@ for i in range (1,11):
 copyList = rateList.copy()
 rateList.sort(reverse = True)
 
-print(copyList)
-print(rateList)
+#print(copyList)
+#print(rateList)
 
 
 rec = []
 for i in range (0,4):
     rec.append(copyList.index(rateList[i])+1)
-print(rec)
+#print(rec)
 
 
 
