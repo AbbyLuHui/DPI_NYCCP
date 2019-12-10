@@ -109,6 +109,11 @@ def eventrender(eid):
   events = list(g.conn.execute(text("select * from event where eid = :eid"), eid=eid))
   return render_template("event.html", events = events, numppl = numppl)
 
+@app.route('/allevent')
+def alleventrender():
+  events = list(g.conn.execute(text("select * from event")))
+  return render_template("allevent.html", events = events, numppl = numppl)
+
 @app.route('/')
 def index():
   """
