@@ -39,7 +39,7 @@ app = Flask(__name__, template_folder=tmpl_dir)
 #
 #     DATABASEURI = "postgresql://biliris:foobar@104.196.18.7/w4111"
 #
-DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.209.244/dpifall2019"
+DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.209.131/dpifall2019"
 #
 
 #
@@ -138,16 +138,20 @@ def index():
       return render_template('login.html')
   else:
       # events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
-      events = get_rec(list(g.conn.execute(text("select * from event e where not exists (select * from rsvp r where " +
+      events = list(g.conn.execute(text("select eid from event e where not exists (select * from rsvp r where " +
                                                 "r.eid = e.eid and r.uid = :uid) and not exists (select * from reject r2 where r2.eid = e.eid and r2.uid = :uid);"),
-                                                uid = int(session['uid']))))
+                                                uid = int(session['uid'])))
+
+      event_ids = get_rec([sub['eid'] for sub in events])
+
       print("========================" + str(len(events)))
       event_proxy = []
 
       for i in range(4):
-          if (i < len(events)):
-              diff = events[i]['time'] - datetime.datetime.now()
-              event_proxy.append(dict(events[i].items()))
+          if (i < len(event_ids)):
+              event = next(g.conn.execute(text("select * from event where eid=:eid"), eid=event_ids[i]))
+              diff = event['time'] - datetime.datetime.now()
+              event_proxy.append(dict(event.items()))
               event_proxy[i]['days'] = diff.days
               event_proxy[i]['hours'] = diff.seconds // 3600
 
