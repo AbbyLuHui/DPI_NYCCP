@@ -58,7 +58,7 @@ def cofi(evs,myid):
             if len(rec) == 4:
                 break
 
-    #print(rec)
+    print(rec)
     return rec
 
  
