@@ -151,7 +151,6 @@ def index():
 
       for i in range(4):
           if (i < len(event_ids)):
-              print(type(event_ids))
               event = next(g.conn.execute(text("select * from event where eid=:eid"), eid=61))
               diff = event['time'] - datetime.datetime.now()
               event_proxy.append(dict(event.items()))
