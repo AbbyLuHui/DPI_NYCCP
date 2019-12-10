@@ -8,11 +8,12 @@ import math
 # mysql -pdpi -udpi -h 129.236.209.244
 
 def cofi(evs,myid):
+    print(evs)
     data = pd.read_csv('dummy1.csv')
     #print(data)
     myrating = data[data['uid'] == myid]['init_rating'].tolist()
     eventseq = data[data['uid'] == myid]['eid'].tolist()
-    #print(myrating)
+    #print(eventseq)
 
     data = data[['uid', 'eid', 'init_rating']]
 
@@ -37,6 +38,7 @@ def cofi(evs,myid):
 
     rateList = []
     for i in range (1,27):
+        #print(eventseq[i-1])
         pred = algo.predict(uid = myid, iid = eventseq[i-1])
         # print(pred)
         score = pred.est + 1.2*myrating[i-1]
@@ -45,19 +47,23 @@ def cofi(evs,myid):
     copyList = rateList.copy()    #rating of events 17, 18, 19,...26, 1, 2, 3..,16
     rateList.sort(reverse = True)
 
-    #print(copyList)
+    print(copyList)
     #print(rateList)
 
-
+    ranking = []
     rec = []
     for i in range (0,26):
         curev = eventseq[copyList.index(rateList[i])]
+        ranking.append(curev)
         if (curev in evs):
             rec.append(curev)
             if len(rec) == 4:
                 break
+    print("All ranking:" + ranking)
 
-    #print(rec)
+    print(rec)
+    if (len(rec) == 0):
+        return ranking[0:4]
     return rec
 
  
