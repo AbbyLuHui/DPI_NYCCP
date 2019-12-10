@@ -106,7 +106,7 @@ numppl = 40
 
 @app.route('/event/<eid>')
 def eventrender(eid):
-  events = list(g.conn.execute(text("select * from event where eid = :eid"), eid=eid))
+  events = next(g.conn.execute(text("select * from event where eid = :eid"), eid=eid))
   return render_template("event.html", events = events, numppl = numppl)
 
 @app.route('/allevent')
@@ -303,6 +303,10 @@ def event_creation_add():
 
 @app.route('/rsvp-post/<int:eid>', methods = ['POST'])
 def rsvp(eid):
+
+    if ('logged_in' not in session or session['logged_in'] == False):
+        redirect('/')
+
     try:
         g.conn.execute(text('insert into rsvp (uid, eid) values (:uid, :eid)'), uid=session['uid'], eid=eid)
     except exc.SQLAlchemyError as err:
@@ -335,6 +339,9 @@ def profile(uid):
 
 @app.route('/create-event')
 def create_event():
+    if ('logged_in' not in session or session['logged_in'] == False):
+        return redirect('/')
+
     return render_template("event_creation.html")
 
 @app.route('/create-event-add', methods=['POST'])
