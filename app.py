@@ -21,7 +21,7 @@ from flask import Flask, request, render_template, g, redirect, Response, sessio
 from dotenv import load_dotenv
 import datetime
 
-load_dotenv()
+#load_dotenv()
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -44,7 +44,7 @@ DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.209.244/dpifall2019"
 #
 # This line creates a database engine that knows how to connect to the URI above.
 #
-engine = create_engine(DATABASEURI)
+#engine = create_engine(DATABASEURI)
 
 #
 # Example of running queries in your database
@@ -61,7 +61,8 @@ def before_request():
   The variable g is globally accessible.
   """
   try:
-    g.conn = engine.connect();
+    pass
+    #g.conn = engine.connect();
   except:
     print ("uh oh, problem connecting to database")
     import traceback; traceback.print_exc()
@@ -74,7 +75,8 @@ def teardown_request(exception):
   If you don't, the database could run out of memory!
   """
   try:
-    g.conn.close()
+    pass
+    #g.conn.close()
   except Exception as e:
     pass
 
@@ -93,6 +95,17 @@ def teardown_request(exception):
 #
 def vanilla(lst):
     return lst;
+
+events = [
+    {'eid': '1', 'name': "Meal Grabbing", 'location': "lerner", 'time':"1 am", 'category': "Food", 'description': "Trying out new restaurants"},
+    {'eid': '2', 'name': "Central Park Run", 'location': "lerner", 'time':"1 am", 'category': "Exercise", 'description': "Running in Central Park"},
+    {'eid': '3', 'name': "Aerospace Info Session", 'location': "lerner", 'time':"1 am", 'category': "Academic", 'description': "Info session for aerospace engineering majors"},
+  ]
+numppl = 40
+
+@app.route('/event')
+def eventrender():
+  return render_template("event.html", events = events, numppl = numppl)
 
 @app.route('/')
 def index():
