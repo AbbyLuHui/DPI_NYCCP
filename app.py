@@ -94,7 +94,7 @@ def teardown_request(exception):
 # see for routing: http://flask.pocoo.org/docs/0.10/quickstart/#routing
 # see for decorators: http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
 #
-def vanilla(lst):
+def get_rec(lst):
     return lst;
 
 events = [
@@ -125,10 +125,9 @@ def index():
       return render_template('login.html')
   else:
       # events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
-      events = vanilla(list(g.conn.execute("select * from event")))
+      events = get_rec(list(g.conn.execute(text("select * from event e where not exists (select * from rsvp r where r.eid = eid) and not exists (select * from reject r2 where r2.eid = eid);"))))
       event_proxy = []
 
-      print("====================" + str(len(events)))
       for i in range(4):
           diff = events[i]['time'] - datetime.datetime.now()
           event_proxy.append(dict(events[i].items()))
@@ -235,7 +234,7 @@ def do_signup():
     session['uid'] = int(uid)
     session['logged_in'] = True
 
-    return index()
+    return redirect('/')
 
 @app.route("/logout")
 def logout():
