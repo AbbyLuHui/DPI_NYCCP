@@ -186,7 +186,7 @@ def event_creation():
 
 @app.route('/event-creation-add', methods=['POST'])
 def event_creation_add():
-  #Insert data into table 
+  #Insert data into table
   return redirect('/')
 
 #

@@ -1,22 +1,200 @@
-<html>
+<!doctype html>
+<html class="no-js" lang="zxx">
+
 <head>
-  <style>
-    .events {
-      background-color: grey;
-      margin: 2em 4em;
-    }
-    .event {
-      background-color: powderblue;
-      margin: 1em 2em;
-      border: solid 0.1em white;
-    }
-  </style>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>CU Buddies</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <link rel="manifest" href="site.webmanifest"> -->
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- CSS here -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/magnific-popup.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/font-awesome.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/themify-icons.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/nice-select.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/flaticon.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/gijgo.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/animate.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/slick.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/slicknav.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/style.css') }}">
+
+    <!-- <link rel="stylesheet" href="css/responsive.css"> -->
 </head>
+
 <body>
-<div class = "events">
-{% for event in events %}
-<div class = "event">{{event.name}}</div>
-{% endfor %}
-</div>
+    <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+
+    <!-- header-start -->
+    <header>
+        <div class="header-area ">
+            <div id="sticky-header" class="main-header-area ">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-xl-3 col-lg-2">
+                            <div class="logo">
+                                <a href="index.html">
+                                    <img src="img/logo.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-7">
+                            <div class="main-menu   d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">
+                                        <li><a href="index.html">home</a></li>
+                                        <li><a href="about.html">about</a></li>
+                                        <li><a href="Recipes.html">Recipes</a></li>
+                                        <li><a href="#">blog <i class="ti-angle-down"></i></a>
+                                            <ul class="submenu">
+                                                <li><a href="blog.html">blog</a></li>
+                                                <li><a href="single-blog.html">single-blog</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">pages <i class="ti-angle-down"></i></a>
+                                            <ul class="submenu">
+                                                <li><a href="recipes_details.html">Recipes Details</a></li>
+                                                <li><a href="elements.html">elements</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 d-none d-lg-block">
+                            <div class="search_icon">
+                                <a href="#">
+                                    <i class="ti-search"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- header-end -->
+
+    <!-- slider_area_start -->
+    <div class="slider_area">
+        <div class="single_slider  d-flex align-items-center slider_bg_1">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-xl-8 ">
+                        <div class="slider_text text-center">
+                            <div class="text">
+                                <h3>
+                                    Alum Wine Party
+                                </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- slider_area_end -->
+    <!-- recepie_area_start  -->
+    <div class="recepie_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="single_recepie text-center">
+                        <div class="recepie_thumb">
+                            <img src="img/event/event_1.png" alt="">
+                        </div>
+                        <h3>Meal Grabbing</h3>
+                        <span>Appetizer</span>
+                        <p>Time Needs: 30 Mins</p>
+                        <a href="#" class="line_btn">View Event Details</a>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="single_recepie text-center">
+                        <div class="recepie_thumb">
+                            <img src="img/event/event_2.png" alt="">
+                        </div>
+                        <h3>Central Park Run</h3>
+                        <span>Appetizer</span>
+                        <p>Time Needs: 30 Mins</p>
+                        <a href="#" class="line_btn">View Event Details</a>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="single_recepie text-center">
+                        <div class="recepie_thumb">
+                            <img src="img/event/event_3.png" alt="">
+                        </div>
+                        <h3>Aerospace Info Session</h3>
+                        <span>Appetizer</span>
+                        <p>Time Needs: 30 Mins</p>
+                        <a href="#" class="line_btn">View Event Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /recepie_area_start  -->
+
+
+    <!-- latest_trand     -->
+    <div class="latest_trand_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="trand_info text-center">
+                        <!-- <p>Thousands of recipes are waiting to be watched</p> -->
+                        <h3>Discover latest trending events</h3>
+                        <a href="#" class="boxed-btn3">View all Events</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ latest_trand     -->
+
+
+    <!-- JS here -->
+    <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/isotope.pkgd.min.js"></script>
+    <script src="js/ajax-form.js"></script>
+    <script src="js/waypoints.min.js"></script>
+    <script src="js/jquery.counterup.min.js"></script>
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <script src="js/scrollIt.js"></script>
+    <script src="js/jquery.scrollUp.min.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/nice-select.min.js"></script>
+    <script src="js/jquery.slicknav.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/gijgo.min.js"></script>
+
+    <!--contact js-->
+    <script src="js/contact.js"></script>
+    <script src="js/jquery.ajaxchimp.min.js"></script>
+    <script src="js/jquery.form.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="js/mail-script.js"></script>
+
+    <script src="js/main.js"></script>
 </body>
+
 </html>
