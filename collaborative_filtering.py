@@ -57,13 +57,11 @@ def cofi(evs,myid):
         ranking.append(curev)
         if (curev in evs):
             rec.append(curev)
-            if len(rec) == 4:
-                break
     print(ranking)
     print(rec)
     if (len(rec) == 0):
         return ranking[0:4]
-    return rec
+    return rec[0:4]
 
  
 #evs = [20,21,22,24,25,14]
