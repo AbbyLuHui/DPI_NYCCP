@@ -59,7 +59,7 @@ def cofi(evs,myid):
             rec.append(curev)
             if len(rec) == 4:
                 break
-    print("All ranking:" + ranking)
+    print(ranking)
 
     print(rec)
     if (len(rec) == 0):
