@@ -7,7 +7,7 @@ import math
 
 # mysql -pdpi -udpi -h 129.236.209.244
 
-def cofi(potev,myid):
+def cofi(evs,myid):
     data = pd.read_csv('dummy1.csv')
     #print(data)
     myrating = data[data['uid'] == myid]['init_rating'].tolist()
