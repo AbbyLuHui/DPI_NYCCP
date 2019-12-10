@@ -16,11 +16,13 @@ Read about it online.
 
 import os
 from sqlalchemy import *
+from sqlalchemy import exc
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response, session, flash, abort
 from dotenv import load_dotenv
+import datetime
 
-load_dotenv()
+#load_dotenv()
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -60,6 +62,7 @@ def before_request():
   The variable g is globally accessible.
   """
   try:
+    pass
     g.conn = engine.connect();
   except:
     print ("uh oh, problem connecting to database")
@@ -73,6 +76,7 @@ def teardown_request(exception):
   If you don't, the database could run out of memory!
   """
   try:
+    pass
     g.conn.close()
   except Exception as e:
     pass
@@ -93,6 +97,18 @@ def teardown_request(exception):
 def vanilla(lst):
     return lst;
 
+events = [
+    {'eid': '1', 'name': "Meal Grabbing", 'location': "lerner", 'time':"1 am", 'category': "Food", 'description': "Trying out new restaurants"},
+    {'eid': '2', 'name': "Central Park Run", 'location': "lerner", 'time':"1 am", 'category': "Exercise", 'description': "Running in Central Park"},
+    {'eid': '3', 'name': "Aerospace Info Session", 'location': "lerner", 'time':"1 am", 'category': "Academic", 'description': "Info session for aerospace engineering majors"},
+  ]
+numppl = 40
+
+@app.route('/event/<eid>')
+def eventrender(eid):
+  events = list(g.conn.execute(text("select * from event where eid = :eid"), eid=eid))
+  return render_template("event.html", events = events, numppl = numppl)
+
 @app.route('/')
 def index():
   """
@@ -104,13 +120,22 @@ def index():
 
   See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
   """
-  events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
   #return render_template("index.html", events=events)
   if not session.get('logged_in'):
       return render_template('login.html')
   else:
-      print("Rendering index page")
-      return render_template("index.html", events=events)
+      # events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
+      events = vanilla(list(g.conn.execute("select * from event")))
+      event_proxy = []
+
+      print("====================" + str(len(events)))
+      for i in range(4):
+          diff = events[i]['time'] - datetime.datetime.now()
+          event_proxy.append(dict(events[i].items()))
+          event_proxy[i]['days'] = diff.days
+          event_proxy[i]['hours'] = diff.seconds // 3600
+
+      return render_template("index.html", headline=event_proxy[0], events=event_proxy[1:])
 
   # DEBUG: this is debugging code to see what request looks like
   # print request.args
@@ -177,7 +202,7 @@ def do_login():
     session['logged_in'] = True
     session['uid'] = int(result[0]['uid'])
 
-    return index()
+    return redirect('/')
 
 # def do_admin_login():
 #     if request.form['password'] == 'password' and request.form['username'] == 'admin':
@@ -199,7 +224,7 @@ def do_signup():
     if (account == '' or password == ''):
         flash("account / password cannot be null!")
         return redirect('/signup')
-        
+
     try:
         g.conn.execute(text('insert into authentication(account, password) values (:account, :password)'),
                         account=account, password=password)

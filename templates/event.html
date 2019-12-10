@@ -10,7 +10,14 @@
 <ul>
 {% for event in events %}
 <div class = "event-container">{{event.name}}</div>
+<div class = "event-container">Event Category: {{event.category}}</div>
+<div class = "event-container">Event Description: {{event.description}}</div>
+<div class = "event-container">Event Venue: {{event.location}}</div>
+<div class = "event-container">Event Time: {{event.time}}</div>
+
 {% endfor %}
+
+<div class = "event-container">Number of Attendees: {{numppl}}</div>
 </ul>
 </body>
 </html>
