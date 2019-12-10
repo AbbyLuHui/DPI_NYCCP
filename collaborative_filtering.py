@@ -60,7 +60,6 @@ def cofi(evs,myid):
             if len(rec) == 4:
                 break
     print(ranking)
-
     print(rec)
     if (len(rec) == 0):
         return ranking[0:4]
