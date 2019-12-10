@@ -80,94 +80,49 @@
     </header>
     <!-- header-end -->
 
-    <!-- slider_area_start -->
-    <div class="slider_area">
-        <div class="single_slider  d-flex align-items-center slider_bg_1">
-            <div class="container">
-                <div class="row align-items-center justify-content-center">
-                    <div class="col-xl-8 ">
-                        <div class="slider_text text-center">
-                            <div class="text">
-                                <h3>
-                                    {{headline.name}}
-                                </h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-    </div>
-    <!-- slider_area_end -->
     <!-- event_area_start  -->
     <div class="recepie_area">
         <div class="container">
             <div class="row">
-              {% for event in events %}
                 <div class="col-xl-4 col-lg-4 col-md-6">
                     <div class="single_recepie text-center">
                         <div class="recepie_thumb">
-                          <a href="/event/{{event.eid}}">
-                            <img src={{event.img}} alt="">
-                          </a>
+                            <img src="static/img/event/event_1.png" alt="">
                         </div>
-                        <h3>{{event.name}}</h3>
-                        <span>{{event.location}}</span>
-                        <p>{{event.days}} days and {{event.hours}} hours away</p>
-                        <a href="/event/{{event.eid}}" class="line_btn">View Event Details</a>
+                        <h3>event.name</h3>
+                        <span>event.time</span>
+                        <p>Time Needs: 30 Mins</p>
+                        <a href="#" class="line_btn">View Event Details</a>
                     </div>
                 </div>
-              {% endfor %}
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="single_recepie text-center">
+                        <div class="recepie_thumb">
+                            <img src="static/img/event/event_2.png" alt="">
+                        </div>
+                        <h3>Central Park Run</h3>
+                        <span>Appetizer</span>
+                        <p>Time Needs: 30 Mins</p>
+                        <a href="#" class="line_btn">View Event Details</a>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="single_recepie text-center">
+                        <div class="recepie_thumb">
+                            <img src="static/img/event/event_3.png" alt="">
+                        </div>
+                        <h3>Aerospace Info Session</h3>
+                        <span>Appetizer</span>
+                        <p>Time Needs: 30 Mins</p>
+                        <a href="#" class="line_btn">View Event Details</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <!-- /event_area_start  -->
 
 
-    <!-- latest_trand     -->
-    <div class="latest_trand_area">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="trand_info text-center">
-                        <h3>Discover latest trending events</h3>
-                        <a href="#" class="boxed-btn3">View all Events</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--/ latest_trand     -->
-
-
-    <!-- JS here
-    <script src="js/vendor/modernizr-3.5.0.min.js"></script>
-    <script src="js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/isotope.pkgd.min.js"></script>
-    <script src="js/ajax-form.js"></script>
-    <script src="js/waypoints.min.js"></script>
-    <script src="js/jquery.counterup.min.js"></script>
-    <script src="js/imagesloaded.pkgd.min.js"></script>
-    <script src="js/scrollIt.js"></script>
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/nice-select.min.js"></script>
-    <script src="js/jquery.slicknav.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/plugins.js"></script>
-    <script src="js/gijgo.min.js"></script>
-
-    contact js
-    <script src="js/contact.js"></script>
-    <script src="js/jquery.ajaxchimp.min.js"></script>
-    <script src="js/jquery.form.js"></script>
-    <script src="js/jquery.validate.min.js"></script>
-    <script src="js/mail-script.js"></script>
-
-    <script src="js/main.js"></script> -->
 </body>
 
 </html>

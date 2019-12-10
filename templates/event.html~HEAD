@@ -1,0 +1,26 @@
+<html>
+<head>
+  <style>
+    .event-container {
+      background-color: powderblue;
+    }
+  </style>
+</head>
+
+<body>
+
+<ul>
+{% for event in events %}
+<div class = "event-container">{{events[0].get('name')}}</div>
+{% endfor %}
+</ul>
+
+<h1>{{events[0].get('name')}}</h1>
+
+<h2>Event Time: {{events[0].get('time')}}</h2> 
+<h2>Event Description: {{events[0].get('description')}}</h2> 
+<h2>Event Location: {{events[0].get('location')}}</h2> 
+<h2>Number of People Already RSVP'd: {{numppl}}</h2> 
+</body>
+
+</html>
