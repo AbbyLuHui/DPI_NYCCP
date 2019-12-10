@@ -91,6 +91,15 @@
                                 <h3>
                                     {{headline.name}}
                                 </h3>
+                                <span>{{headline.location}}</span>
+                                <h4>{{headline.days}} days and {{headline.hours}} hours away</h4>
+                                <a href="/event/{{headline.eid}}" class="line_btn">View Event Details</a>
+                                <form method = "POST" action = "/rsvp-post/{{headline.eid}}">
+                                  <button class="line_btn">RSVP</button>
+                                </form>
+                                <form method = "POST" action = "/reject-post/{{headline.eid}}">
+                                  <button class="line_btn">Reject</button>
+                                </form>
                         </div>
                     </div>
                 </div>
@@ -121,7 +130,7 @@
             </div>
         </div>
     </div>
-    <!-- /event_area_start  -->
+    <!-- /event_area_end  -->
 
 
     <!-- latest_trand     -->
@@ -131,7 +140,7 @@
                 <div class="col-xl-12">
                     <div class="trand_info text-center">
                         <h3>Discover latest trending events</h3>
-                        <a href="#" class="boxed-btn3">View all Events</a>
+                        <a href="/allevent" class="boxed-btn3">View all Events</a>
                     </div>
                 </div>
             </div>

@@ -3,21 +3,36 @@
   <style>
     .event-container {
       background-color: powderblue;
+
+    }
+
+    body {
+      font-family: "Roboto", sans-serif;
+      font-weight: normal;
+      font-style: normal;
+      
+    }
+
+    h1, h2, h3, h4, h5 {
+      font-family: "Satisfy", cursive;
+      color: #000000;
     }
   </style>
 </head>
 <body>
 <ul>
 {% for event in events %}
-<div class = "event-container">{{event.name}}</div>
-<div class = "event-container">Event Category: {{event.category}}</div>
-<div class = "event-container">Event Description: {{event.description}}</div>
-<div class = "event-container">Event Venue: {{event.location}}</div>
-<div class = "event-container">Event Time: {{event.time}}</div>
+<div class = "event-container">
+  <h1>{{event.name}}</h1>
+</div>
+<div class = "event-container"><b>Event Category:</b> {{event.category}}</div>
+<div class = "event-container"><b>Event Description:</b> {{event.description}}</div>
+<div class = "event-container"><b>Event Venue:</b> {{event.location}}</div>
+<div class = "event-container"><b>Event Time:</b> {{event.time}}</div>
 
 {% endfor %}
 
-<div class = "event-container">Number of Attendees: {{numppl}}</div>
+<div class = "event-container"><b>Number of Attendees:</b> {{numppl}}</div>
 </ul>
 </body>
 </html>
