@@ -50,17 +50,20 @@ def cofi(evs,myid):
     print(copyList)
     #print(rateList)
 
-
+    ranking = []
     rec = []
     for i in range (0,26):
         curev = eventseq[copyList.index(rateList[i])]
-        print(curev)
+        ranking.append(curev)
         if (curev in evs):
             rec.append(curev)
             if len(rec) == 4:
                 break
+    print("All ranking:" + ranking)
 
     print(rec)
+    if (len(rec) == 0):
+        return ranking[0:4]
     return rec
 
  
