@@ -12,7 +12,7 @@ def cofi(evs,myid):
     #print(data)
     myrating = data[data['uid'] == myid]['init_rating'].tolist()
     eventseq = data[data['uid'] == myid]['eid'].tolist()
-    #print(myrating)
+    #print(eventseq)
 
     data = data[['uid', 'eid', 'init_rating']]
 
@@ -37,6 +37,7 @@ def cofi(evs,myid):
 
     rateList = []
     for i in range (1,27):
+        print(eventseq[i-1])
         pred = algo.predict(uid = myid, iid = eventseq[i-1])
         # print(pred)
         score = pred.est + 1.2*myrating[i-1]
@@ -45,7 +46,7 @@ def cofi(evs,myid):
     copyList = rateList.copy()    #rating of events 17, 18, 19,...26, 1, 2, 3..,16
     rateList.sort(reverse = True)
 
-    #print(copyList)
+    print(copyList)
     #print(rateList)
 
 
