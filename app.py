@@ -18,9 +18,9 @@ import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response, session, flash, abort
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 
-load_dotenv()
+#load_dotenv()
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -96,7 +96,9 @@ def vanilla(lst):
     return lst;
 
 events = [
-    {'eid': '1', 'name': "bbq", 'location': "lerner", 'time':"1 am", 'category': "food", 'description': "free food"}
+    {'eid': '1', 'name': "Meal Grabbing", 'location': "lerner", 'time':"1 am", 'category': "Food", 'description': "Trying out new restaurants"},
+    {'eid': '2', 'name': "Central Park Run", 'location': "lerner", 'time':"1 am", 'category': "Exercise", 'description': "Running in Central Park"},
+    {'eid': '3', 'name': "Aerospace Info Session", 'location': "lerner", 'time':"1 am", 'category': "Academic", 'description': "Info session for aerospace engineering majors"},
   ]
 numppl = 40
 
