@@ -146,12 +146,13 @@ def index():
                                                 uid = int(session['uid'])))
 
       event_ids = get_rec([sub['eid'] for sub in events],int(session['uid']))
-      print("========================" + str(len(events)))
+      print("========================")
       event_proxy = []
 
       for i in range(4):
           if (i < len(event_ids)):
-              event = list(g.conn.execute(text("select * from event where eid=:eid"), eid=event_ids[i])) # deleted next
+              print(type(event_ids))
+              event = next(g.conn.execute(text("select * from event where eid=:eid"), eid=61))
               diff = event['time'] - datetime.datetime.now()
               event_proxy.append(dict(event.items()))
               event_proxy[i]['days'] = diff.days
