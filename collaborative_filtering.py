@@ -37,7 +37,7 @@ def cofi(evs,myid):
 
     rateList = []
     for i in range (1,27):
-        print(eventseq[i-1])
+        #print(eventseq[i-1])
         pred = algo.predict(uid = myid, iid = eventseq[i-1])
         # print(pred)
         score = pred.est + 1.2*myrating[i-1]
