@@ -7,12 +7,12 @@ import pandas as pd
 data = pd.read_csv('dummy1.csv')
 print(data)
 
-data = data[['uid', 'iid', 'rating']]
+data = data[['uid', 'eid', 'init_rating']]
 
 
 from surprise import Reader, Dataset
 reader = Reader()
-data = Dataset.load_from_df(data[['uid', 'iid', 'rating']], reader)
+data = Dataset.load_from_df(data[['uid', 'eid', 'init_rating']], reader)
 
 from surprise.model_selection import train_test_split
 trainset, testset = train_test_split(data, test_size=0.25)
@@ -29,10 +29,10 @@ from surprise import accuracy
 accuracy.rmse(predictions)
 
 
-
-pred = algo.predict(uid = '3', iid='10')
-score = pred.est
-print(score)
+for i in range (1,11):
+    pred = algo.predict(uid = '14', iid = i)
+    score = pred.est
+    print(score)
 
 
 # https://blog.cambridgespark.com/tutorial-practical-introduction-to-recommender-systems-dbe22848392b
