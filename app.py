@@ -102,8 +102,8 @@ events = [
   ]
 numppl = 40
 
-@app.route('/event/<eid>')
-def eventrender(eid):
+@app.route('/event')
+def eventrender():
   # use eid to query event in sql 
   return render_template("event.html", events = events, numppl = numppl)
 
