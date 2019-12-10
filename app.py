@@ -40,7 +40,7 @@ app = Flask(__name__, template_folder=tmpl_dir)
 #
 #     DATABASEURI = "postgresql://biliris:foobar@104.196.18.7/w4111"
 #
-DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.209.244/dpifall2019"
+DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.209.131/dpifall2019"
 #
 
 #
@@ -110,13 +110,21 @@ numppl = 40
 
 @app.route('/event/<eid>')
 def eventrender(eid):
-  events = list(g.conn.execute(text("select * from event where eid = :eid"), eid=eid))
+  events = next(g.conn.execute(text("select * from event where eid = :eid"), eid=eid))
   return render_template("event.html", events = events, numppl = numppl)
 
 @app.route('/allevent')
 def alleventrender():
   events = list(g.conn.execute(text("select * from event")))
-  return render_template("allevent.html", events = events, numppl = numppl)
+  event_proxy = []
+
+  for i in range(len(events)):
+      diff = events[i]['time'] - datetime.datetime.now()
+      event_proxy.append(dict(events[i].items()))
+      event_proxy[i]['days'] = diff.days
+      event_proxy[i]['hours'] = diff.seconds // 3600
+
+  return render_template("allevent.html", events = event_proxy, numppl = numppl)
 
 @app.route('/')
 def index():
@@ -134,16 +142,19 @@ def index():
       return render_template('login.html')
   else:
       # events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
-      events = get_rec(list(g.conn.execute(text("select * from event e where not exists (select * from rsvp r where " +
+      events = list(g.conn.execute(text("select eid from event e where not exists (select * from rsvp r where " +
                                                 "r.eid = e.eid and r.uid = :uid) and not exists (select * from reject r2 where r2.eid = e.eid and r2.uid = :uid);"),
-                                                uid = int(session['uid']))), int(session['uid']))
+                                                uid = int(session['uid'])))
+
+      event_ids = get_rec([sub['eid'] for sub in events])
       print("========================" + str(len(events)))
       event_proxy = []
 
       for i in range(4):
-          if (i < len(events)):
-              diff = events[i]['time'] - datetime.datetime.now()
-              event_proxy.append(dict(events[i].items()))
+          if (i < len(event_ids)):
+              event = next(g.conn.execute(text("select * from event where eid=:eid"), eid=event_ids[i]))
+              diff = event['time'] - datetime.datetime.now()
+              event_proxy.append(dict(event.items()))
               event_proxy[i]['days'] = diff.days
               event_proxy[i]['hours'] = diff.seconds // 3600
 
@@ -299,6 +310,10 @@ def event_creation_add():
 
 @app.route('/rsvp-post/<int:eid>', methods = ['POST'])
 def rsvp(eid):
+
+    if ('logged_in' not in session or session['logged_in'] == False):
+        redirect('/')
+
     try:
         g.conn.execute(text('insert into rsvp (uid, eid) values (:uid, :eid)'), uid=session['uid'], eid=eid)
     except exc.SQLAlchemyError as err:
@@ -328,7 +343,46 @@ def profile(uid):
         # return render_template('error.html', msg = str(err.__dict__['orig']))
 
     return render_template("profile.html", user=user, created=created, rsvped=rsvped)
-    
+
+@app.route('/create-event')
+def create_event():
+    if ('logged_in' not in session or session['logged_in'] == False):
+        return redirect('/')
+
+    return render_template("event_creation.html")
+
+@app.route('/create-event-add', methods=['POST'])
+def create_event_add():
+    name = request.form['name']
+    location = request.form['location']
+    category = request.form['category']
+    description = request.form['description']
+    time = request.form['time']
+    date = request.form['date']
+
+    datetime = date + " " + time + ":00"
+
+    social = request.form['social']
+    professional = request.form['professional']
+    relaxing = request.form['relaxing']
+    educational = request.form['educational']
+    athletic = request.form['athletic']
+
+    uid = session['uid']
+
+    try:
+        g.conn.execute(text('insert into event (name, location, category, description, time, starter, social, professional, educational, relaxing, athletic) values'
+                            + '(:name, :location, :category, :description, :time, :starter, :social, :professional, :educational, :relaxing, :athletic)'),
+                            name=name, location=location, category=category, description=description, time=datetime, starter=uid, social=float(social),
+                            professional=float(professional), educational=float(educational), relaxing=float(relaxing), athletic=float(athletic))
+        eid = int(next(g.conn.execute(text('select * from event where name=:name, location=:location'), name=name, location=location))['eid'])
+        g.conn.execute(text('insert into create (uid, eid) values (:uid, :eid)'), uid=uid, eid=eid)
+    except exc.SQLAlchemyError as err:
+        print("=======================" + str(err.__dict__['orig']))
+        # return render_template('error.html', msg = str(err.__dict__['orig']))
+
+    return redirect('/')
+
 if __name__ == "__main__":
   import click
 
