@@ -7,40 +7,42 @@
     <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
   </head>
   <body>
-    <form method="POST", action = "/survey-add">
+    <form method="POST", action = "/create-event-add">
     <p>Event Name: <input type="text" name="name"></p>
     <p>Location: <input type="text" name="location"></p>
-    <p>Time: <input type="time" name="time"></p>
+    <p>Time: <input type="date" name="date"><input type="time" name="time"></p>
     <p>Category: <select name="category">
-    <option>Hangout</option>
-    <option>Club Event</option>
-    <option>School Event</option>
+    <option>Social</option>
+    <option>Professional</option>
+    <option>Educational</option>
+    <option>Relaxing</option>
+    <option>Athletic</option>
     </select></p>
     <p>Description: <input type="text" name="description"></p>
     <p>How many people: <input type="number" name="numpeople"></p>
     <div class="slidecontainer" id="slide_container_f">
     <p>Social:<span id="demo"></span></p>
-    <input type="range" min=1 max=100 class="slider" 
+    <input type="range" min=1 max=100 class="slider"
         id="myRange" name="social">
     </div>
     <div class="slidecontainer" id="slide_container_f">
     <p>Professional:<span id="demo"></span></p>
-    <input type="range" min=1 max=100 class="slider" 
+    <input type="range" min=1 max=100 class="slider"
         id="myRange" name="professional">
     </div>
     <div class="slidecontainer" id="slide_container_f">
     <p>Educational:<span id="demo"></span></p>
-    <input type="range" min=1 max=100 class="slider" 
+    <input type="range" min=1 max=100 class="slider"
         id="myRange" name="educational">
     </div>
     <div class="slidecontainer" id="slide_container_f">
     <p>Relaxing:<span id="demo"></span></p>
-    <input type="range" min=1 max=100 class="slider" 
+    <input type="range" min=1 max=100 class="slider"
         id="myRange" name="relaxing">
     </div>
     <div class="slidecontainer" id="slide_container_f">
     <p>Athletic:<span id="demo"></span></p>
-    <input type="range" min=1 max=100 class="slider" 
+    <input type="range" min=1 max=100 class="slider"
         id="myRange" name="athletic">
     </div>
     <input type="submit" value="Submit">

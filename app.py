@@ -112,7 +112,15 @@ def eventrender(eid):
 @app.route('/allevent')
 def alleventrender():
   events = list(g.conn.execute(text("select * from event")))
-  return render_template("allevent.html", events = events, numppl = numppl)
+  event_proxy = []
+
+  for i in range(len(events)):
+      diff = events[i]['time'] - datetime.datetime.now()
+      event_proxy.append(dict(events[i].items()))
+      event_proxy[i]['days'] = diff.days
+      event_proxy[i]['hours'] = diff.seconds // 3600
+
+  return render_template("allevent.html", events = event_proxy, numppl = numppl)
 
 @app.route('/')
 def index():
@@ -324,7 +332,43 @@ def profile(uid):
         # return render_template('error.html', msg = str(err.__dict__['orig']))
 
     return render_template("profile.html", user=user, created=created, rsvped=rsvped)
-    
+
+@app.route('/create-event')
+def create_event():
+    return render_template("event_creation.html")
+
+@app.route('/create-event-add', methods=['POST'])
+def create_event_add():
+    name = request.form['name']
+    location = request.form['location']
+    category = request.form['category']
+    description = request.form['description']
+    time = request.form['time']
+    date = request.form['date']
+
+    datetime = date + " " + time + ":00"
+
+    social = request.form['social']
+    professional = request.form['professional']
+    relaxing = request.form['relaxing']
+    educational = request.form['educational']
+    athletic = request.form['athletic']
+
+    uid = session['uid']
+
+    try:
+        g.conn.execute(text('insert into event (name, location, category, description, time, starter, social, professional, educational, relaxing, athletic) values'
+                            + '(:name, :location, :category, :description, :time, :starter, :social, :professional, :educational, :relaxing, :athletic)'),
+                            name=name, location=location, category=category, description=description, time=datetime, starter=uid, social=float(social),
+                            professional=float(professional), educational=float(educational), relaxing=float(relaxing), athletic=float(athletic))
+        eid = int(next(g.conn.execute(text('select * from event where name=:name, location=:location'), name=name, location=location))['eid'])
+        g.conn.execute(text('insert into create (uid, eid) values (:uid, :eid)'), uid=uid, eid=eid)
+    except exc.SQLAlchemyError as err:
+        print("=======================" + str(err.__dict__['orig']))
+        # return render_template('error.html', msg = str(err.__dict__['orig']))
+
+    return redirect('/')
+
 if __name__ == "__main__":
   import click
 
