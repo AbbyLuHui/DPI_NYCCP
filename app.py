@@ -40,11 +40,9 @@ app = Flask(__name__, template_folder=tmpl_dir)
 #
 #     DATABASEURI = "postgresql://biliris:foobar@104.196.18.7/w4111"
 #
-<<<<<<< HEAD
+
 DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.208.174/dpifall2019"
-=======
-DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.209.131/dpifall2019"
->>>>>>> 2f1ffb41e2cb5d6a055efc08926cecabc49ba9c7
+
 #
 
 #
@@ -345,8 +343,6 @@ def profile(uid):
 
     return render_template("profile.html", user=user, created=created, rsvped=rsvped)
 
-<<<<<<< HEAD
-=======
 @app.route('/create-event')
 def create_event():
     if ('logged_in' not in session or session['logged_in'] == False):
@@ -386,7 +382,6 @@ def create_event_add():
 
     return redirect('/')
 
->>>>>>> 2f1ffb41e2cb5d6a055efc08926cecabc49ba9c7
 if __name__ == "__main__":
   import click
 
