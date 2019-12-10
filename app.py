@@ -18,6 +18,9 @@ import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response, session, flash, abort
+from dotenv import load_dotenv
+
+load_dotenv()
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -34,7 +37,7 @@ app = Flask(__name__, template_folder=tmpl_dir)
 #
 #     DATABASEURI = "postgresql://biliris:foobar@104.196.18.7/w4111"
 #
-DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.209.158/dpifall2019"
+DATABASEURI = "mysql+pymysql://dpi:dpi@129.236.209.244/dpifall2019"
 #
 
 #
@@ -112,7 +115,6 @@ def index():
   # DEBUG: this is debugging code to see what request looks like
   # print request.args
 
-
   #
   # example of a database query
   #
@@ -158,11 +160,56 @@ def index():
 
 
 @app.route('/login', methods=['POST'])
-def do_admin_login():
-    if request.form['password'] == 'password' and request.form['username'] == 'admin':
-        session['logged_in'] = True
-    else:
+def do_login():
+    account = request.form['account']
+    password = request.form['password']
+
+    try:
+        result = list(g.conn.execute(text('select uid from authentication where account = :account and password = :password'),
+                        account=account, password=password))
+    except exc.SQLAlchemyError as err:
+        return render_template('error.html', msg = str(err.__dict__['orig']))
+
+    if (len(result) == 0):
         flash('wrong password!')
+        return index()
+
+    session['logged_in'] = True
+    session['uid'] = int(result[0]['uid'])
+
+    return index()
+
+# def do_admin_login():
+#     if request.form['password'] == 'password' and request.form['username'] == 'admin':
+#         session['logged_in'] = True
+#         return redirect('/')
+#     else:
+#         flash('wrong password!')
+#     return index()
+
+@app.route('/signup', methods = ['GET'])
+def signup():
+    return render_template("signup.html")
+
+@app.route('/signup-post', methods = ['POST'])
+def do_signup():
+    account = request.form['account']
+    password = request.form['password']
+
+    if (account == '' or password == ''):
+        flash("account / password cannot be null!")
+        return redirect('/signup')
+        
+    try:
+        g.conn.execute(text('insert into authentication(account, password) values (:account, :password)'),
+                        account=account, password=password)
+    except exc.SQLAlchemyError as err:
+        return render_template('error.html', msg = str(err.__dict__['orig']))
+
+    uid = g.conn.execute(text('select uid from authentication where account = :account'), account=account).fetchone()['uid']
+    session['uid'] = int(uid)
+    session['logged_in'] = True
+
     return index()
 
 @app.route("/logout")
@@ -176,8 +223,26 @@ def survey():
 
 @app.route('/survey-add', methods=['POST'])
 def survey_add():
-  slider_q1 = request.form['social']
-  print(slider_q1)
+  social = request.form['social']
+  professional = request.form['professional']
+  relaxing = request.form['relaxing']
+  educational = request.form['educational']
+  athletic = request.form['athletic']
+
+  name = request.form['name']
+  uni = request.form['uni']
+  major = request.form['major']
+  year = request.form['year']
+
+  try:
+      g.conn.execute(text("insert into authentication(name, uni, major, year, social, professional, relaxing, educational, athletic) \
+                        values(:name, :uni, :major, :year, :social, :professional, :relaxing, :educational, :athletic)"),
+                        name = name, uni = uni, major = major, year = year, social = social, educational = educational,
+                        relaxing = relaxing, professional = professional, athletic = athletic)
+  except exc.SQLAlchemyError as err:
+      return render_template('error.html', msg = str(err.__dict__['orig']))
+
+
   return redirect('/')
 
 @app.route('/event-creation')
