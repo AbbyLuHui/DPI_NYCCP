@@ -8,13 +8,13 @@
   <h3>My Events:</h3>
   <ul>
     {% for event in created %}
-    <p>{{event.name}}</p>
+    <a href='/event/{{event.eid}}'><p>{{event.name}}</p></a>
     {% endfor %}
   </ul>
   <h3>Events I RSVPed: </h3>
   <ul>
     {% for event in rsvped %}
-    <p>{{event.name}}</p>
+    <a href='/event/{{event.eid}}'><p>{{event.name}}</p></a>
     {% endfor %}
   </ul>
 </body>

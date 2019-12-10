@@ -10,7 +10,7 @@
       font-family: "Roboto", sans-serif;
       font-weight: normal;
       font-style: normal;
-      
+
     }
 
     h1, h2, h3, h4, h5 {
@@ -21,18 +21,22 @@
 </head>
 <body>
 <ul>
-{% for event in events %}
 <div class = "event-container">
-  <h1>{{event.name}}</h1>
+  <h1>{{events.name}}</h1>
 </div>
-<div class = "event-container"><b>Event Category:</b> {{event.category}}</div>
-<div class = "event-container"><b>Event Description:</b> {{event.description}}</div>
-<div class = "event-container"><b>Event Venue:</b> {{event.location}}</div>
-<div class = "event-container"><b>Event Time:</b> {{event.time}}</div>
-
-{% endfor %}
-
+<div class = "event-container"><b>Event Category:</b> {{events.category}}</div>
+<div class = "event-container"><b>Event Description:</b> {{events.description}}</div>
+<div class = "event-container"><b>Event Venue:</b> {{events.location}}</div>
+<div class = "event-container"><b>Event Time:</b> {{events.time}}</div>
 <div class = "event-container"><b>Number of Attendees:</b> {{numppl}}</div>
+
+<form method = "POST" action = "/rsvp-post/{{events.eid}}">
+  <button class="line_btn">RSVP</button>
+</form>
+<form method = "POST" action = "/reject-post/{{events.eid}}">
+  <button class="line_btn">Reject</button>
+</form>
+
 </ul>
 </body>
 </html>
