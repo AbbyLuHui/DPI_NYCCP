@@ -89,7 +89,7 @@
                         <div class="slider_text text-center">
                             <div class="text">
                                 <h3>
-                                    Alum Wine Party
+                                    {{headline.name}}
                                 </h3>
                         </div>
                     </div>
@@ -103,39 +103,21 @@
     <div class="recepie_area">
         <div class="container">
             <div class="row">
+              {% for event in events %}
                 <div class="col-xl-4 col-lg-4 col-md-6">
                     <div class="single_recepie text-center">
                         <div class="recepie_thumb">
-                            <img src="static/img/event/event_1.png" alt="">
+                          <a href="/event/{{event.eid}}">
+                            <img src={{event.img}} alt="">
+                          </a>
                         </div>
-                        <h3>Meal Grabbing</h3>
-                        <span>Appetizer</span>
-                        <p>Time Needs: 30 Mins</p>
-                        <a href="#" class="line_btn">View Event Details</a>
+                        <h3>{{event.name}}</h3>
+                        <span>{{event.location}}</span>
+                        <p>{{event.days}} days and {{event.hours}} hours away</p>
+                        <a href="/event" class="line_btn">View Event Details</a>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-6">
-                    <div class="single_recepie text-center">
-                        <div class="recepie_thumb">
-                            <img src="static/img/event/event_2.png" alt="">
-                        </div>
-                        <h3>Central Park Run</h3>
-                        <span>Appetizer</span>
-                        <p>Time Needs: 30 Mins</p>
-                        <a href="#" class="line_btn">View Event Details</a>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6">
-                    <div class="single_recepie text-center">
-                        <div class="recepie_thumb">
-                            <img src="static/img/event/event_3.png" alt="">
-                        </div>
-                        <h3>Aerospace Info Session</h3>
-                        <span>Appetizer</span>
-                        <p>Time Needs: 30 Mins</p>
-                        <a href="#" class="line_btn">View Event Details</a>
-                    </div>
-                </div>
+              {% endfor %}
             </div>
         </div>
     </div>

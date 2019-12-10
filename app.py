@@ -19,6 +19,7 @@ from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response, session, flash, abort
 from dotenv import load_dotenv
+import datetime
 
 load_dotenv()
 
@@ -104,13 +105,22 @@ def index():
 
   See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
   """
-  events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
   #return render_template("index.html", events=events)
   if not session.get('logged_in'):
       return render_template('login.html')
   else:
-      print("Rendering index page")
-      return render_template("index.html", events=events)
+      # events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
+      events = vanilla(list(g.conn.execute("select * from event")))
+      event_proxy = []
+
+      print("====================" + str(len(events)))
+      for i in range(4):
+          diff = events[i]['time'] - datetime.datetime.now()
+          event_proxy.append(dict(events[i].items()))
+          event_proxy[i]['days'] = diff.days
+          event_proxy[i]['hours'] = diff.seconds // 3600
+
+      return render_template("index.html", headline=event_proxy[0], events=event_proxy[1:])
 
   # DEBUG: this is debugging code to see what request looks like
   # print request.args
@@ -199,7 +209,7 @@ def do_signup():
     if (account == '' or password == ''):
         flash("account / password cannot be null!")
         return redirect('/signup')
-        
+
     try:
         g.conn.execute(text('insert into authentication(account, password) values (:account, :password)'),
                         account=account, password=password)
