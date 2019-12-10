@@ -10,6 +10,28 @@
 
     <!-- <link rel="manifest" href="site.webmanifest"> -->
     <!-- Place favicon.ico in the root directory -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+  	$("document").ready(function() {
+  		$("#category").change(function() {
+  			if ($(this).val() == 'all'){
+  				$(".event").show();
+  			} else {
+  				$(".event").hide();
+  				$("." + $(this).val()).show();
+  			}
+  		});
+  		$("#time-select").change(function() {
+  			if ($(this).val() == ''){
+  				$(location).attr('href', '/');
+  			} else {
+  				$(location).attr('href', '/' + $(this).val());
+  			}
+  		});
+  	});
+    </script>
+
+
 
     <!-- CSS here -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}">
@@ -33,13 +55,21 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
         <![endif]-->
 
+
+
         <!-- event_area_start  -->
         <div class="recepie_area">
+            <h4>Catogory: <select id='category'>
+              <option value='all'>all</option>
+              <option value='social'>Social</option>
+              <option value='professional'>Professional</option>
+              <option value='educational'>Educational</option>
+            </select></h4>
             <div class="container">
                 <div class="row">
                   {% for event in events %}
                     <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div class="single_recepie text-center">
+                        <div class="single_recepie text-center event {{event.category}}">
                             <div class="recepie_thumb">
                               <a href="/event/{{event.eid}}">
                                 <img src={{event.img}} alt="">
@@ -56,5 +86,34 @@
             </div>
         </div>
         <!-- /event_area_end  -->
+
+        <!-- JS here -->
+        <script src="static/js/vendor/modernizr-3.5.0.min.js"></script>
+        <script src="static/js/vendor/jquery-1.12.4.min.js"></script>
+        <script src="static/js/popper.min.js"></script>
+        <script src="static/js/bootstrap.min.js"></script>
+        <script src="static/js/owl.carousel.min.js"></script>
+        <script src="static/js/isotope.pkgd.min.js"></script>
+        <script src="static/js/ajax-form.js"></script>
+        <script src="static/js/waypoints.min.js"></script>
+        <script src="static/js/jquery.counterup.min.js"></script>
+        <script src="static/js/imagesloaded.pkgd.min.js"></script>
+        <script src="static/js/scrollIt.js"></script>
+        <script src="static/js/jquery.scrollUp.min.js"></script>
+        <script src="static/js/wow.min.js"></script>
+        <script src="static/js/nice-select.min.js"></script>
+        <script src="static/js/jquery.slicknav.min.js"></script>
+        <script src="static/js/jquery.magnific-popup.min.js"></script>
+        <script src="static/js/plugins.js"></script>
+        <script src="static/js/gijgo.min.js"></script>
+
+        <!--contact js-->
+        <script src="js/contact.js"></script>
+        <script src="js/jquery.ajaxchimp.min.js"></script>
+        <script src="js/jquery.form.js"></script>
+        <script src="js/jquery.validate.min.js"></script>
+        <script src="js/mail-script.js"></script>
+
+        <script src="js/main.js"></script>
 </body>
 </html>
