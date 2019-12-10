@@ -1,0 +1,20 @@
+<head>
+</head>
+<body>
+  <h1>{{user.first_name}} {{user.last_name}}'s personal profile</h1>
+  <h3>year: {{user.year}}</h3>
+  <h3>major: {{user.major}}</h3>
+  <p>bio: {{user.bio}}</p>
+  <h3>My Events:</h3>
+  <ul>
+    {% for event in created %}
+    <p>{{event.name}}</p>
+    {% endfor %}
+  </ul>
+  <h3>Events I RSVPed: </h3>
+  <ul>
+    {% for event in rsvped %}
+    <p>{{event.name}}</p>
+    {% endfor %}
+  </ul>
+</body>

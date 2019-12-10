@@ -143,7 +143,8 @@ def index():
               event_proxy[i]['days'] = diff.days
               event_proxy[i]['hours'] = diff.seconds // 3600
 
-      return render_template("index.html", headline=event_proxy[0], events=event_proxy[1:])
+      user = next(g.conn.execute(text('select * from user where uid = :uid'), uid=session['uid']))
+      return render_template("index.html", headline=event_proxy[0], events=event_proxy[1:], user=user)
 
   # DEBUG: this is debugging code to see what request looks like
   # print request.args
@@ -312,6 +313,18 @@ def reject(eid):
         # return render_template('error.html', msg = str(err.__dict__['orig']))
     return redirect('/')
 
+@app.route('/profile/<int:uid>')
+def profile(uid):
+    try:
+        user = next(g.conn.execute(text('select * from user where uid = :uid'), uid=uid))
+        created = list(g.conn.execute(text('select * from event where starter = :uid'), uid=uid))
+        rsvped = list(g.conn.execute(text('select * from event e join rsvp r where r.eid = e.eid and r.uid = :uid'), uid=uid))
+    except exc.SQLAlchemyError as err:
+        print("=======================" + str(err.__dict__['orig']))
+        # return render_template('error.html', msg = str(err.__dict__['orig']))
+
+    return render_template("profile.html", user=user, created=created, rsvped=rsvped)
+    
 if __name__ == "__main__":
   import click
 
