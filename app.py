@@ -130,14 +130,18 @@ def index():
       return render_template('login.html')
   else:
       # events = vanilla(list(g.conn.execute("select * from event where event.time > now()")))
-      events = get_rec(list(g.conn.execute(text("select * from event e where not exists (select * from rsvp r where r.eid = eid) and not exists (select * from reject r2 where r2.eid = eid);"))))
+      events = get_rec(list(g.conn.execute(text("select * from event e where not exists (select * from rsvp r where " +
+                                                "r.eid = e.eid and r.uid = :uid) and not exists (select * from reject r2 where r2.eid = e.eid and r2.uid = :uid);"),
+                                                uid = int(session['uid']))))
+      print("========================" + str(len(events)))
       event_proxy = []
 
       for i in range(4):
-          diff = events[i]['time'] - datetime.datetime.now()
-          event_proxy.append(dict(events[i].items()))
-          event_proxy[i]['days'] = diff.days
-          event_proxy[i]['hours'] = diff.seconds // 3600
+          if (i < len(events)):
+              diff = events[i]['time'] - datetime.datetime.now()
+              event_proxy.append(dict(events[i].items()))
+              event_proxy[i]['days'] = diff.days
+              event_proxy[i]['hours'] = diff.seconds // 3600
 
       return render_template("index.html", headline=event_proxy[0], events=event_proxy[1:])
 
@@ -239,16 +243,16 @@ def do_signup():
     session['uid'] = int(uid)
     session['logged_in'] = True
 
-    return redirect('/')
+    return redirect('/survey/' + str(uid))
 
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
     return index()
 
-@app.route('/survey')
-def survey():
-  return render_template("survey.html")
+@app.route('/survey/<uid>')
+def survey(uid):
+  return render_template("survey.html", uid=uid)
 
 @app.route('/survey-add', methods=['POST'])
 def survey_add():
@@ -258,15 +262,20 @@ def survey_add():
   educational = request.form['educational']
   athletic = request.form['athletic']
 
-  name = request.form['name']
+  first_name = request.form['first-name']
+  last_name = request.form['last-name']
   uni = request.form['uni']
   major = request.form['major']
   year = request.form['year']
+  bio = request.form['bio']
+
+  uid = request.form['uid']
+  account = next(g.conn.execute(text('select account from authentication where uid = :uid'), uid=int(uid)))['account']
 
   try:
-      g.conn.execute(text("insert into authentication(name, uni, major, year, social, professional, relaxing, educational, athletic) \
-                        values(:name, :uni, :major, :year, :social, :professional, :relaxing, :educational, :athletic)"),
-                        name = name, uni = uni, major = major, year = year, social = social, educational = educational,
+      g.conn.execute(text("insert into user(uid, first_name, last_name, uni, major, year, contact, bio, social, professional, relaxing, educational, athletic) \
+                        values(:uid, :first_name, :last_name, :uni, :major, :year, :contact, :bio, :social, :professional, :relaxing, :educational, :athletic)"),
+                        uid = int(uid), first_name=first_name, last_name=last_name, uni = uni, major = major, year = year, contact = account, bio = bio, social = social, educational = educational,
                         relaxing = relaxing, professional = professional, athletic = athletic)
   except exc.SQLAlchemyError as err:
       return render_template('error.html', msg = str(err.__dict__['orig']))
@@ -283,32 +292,25 @@ def event_creation_add():
   #Insert data into table
   return redirect('/')
 
-#
-# This is an example of a different path.  You can see it at:
-#
-#     localhost:8111/another
-#
-# Notice that the function name is another() rather than index()
-# The functions for each app.route need to have different names
-#
-# @app.route('/another')
-# def another():
-#   return render_template("another.html")
+@app.route('/rsvp-post/<int:eid>', methods = ['POST'])
+def rsvp(eid):
+    try:
+        g.conn.execute(text('insert into rsvp (uid, eid) values (:uid, :eid)'), uid=session['uid'], eid=eid)
+    except exc.SQLAlchemyError as err:
+        print("=======================" + str(session['uid']))
+        print("=======================" + str(err.__dict__['orig']))
+        # return render_template('error.html', msg = str(err.__dict__['orig']))
+    return redirect('/')
 
-
-# Example of adding new data to the database
-# @app.route('/add', methods=['POST'])
-# def add():
-#   name = request.form['name']
-#   g.conn.execute('INSERT INTO test(name) VALUES (\'' + name + '\');')
-#   return redirect('/')
-
-
-# @app.route('/login')
-# def login():
-#     abort(401)
-#     this_is_never_executed()
-
+@app.route('/reject-post/<int:eid>', methods = ['POST'])
+def reject(eid):
+    try:
+        g.conn.execute(text('insert into reject (uid, eid) values (:uid, :eid)'), uid=session['uid'], eid=eid)
+    except exc.SQLAlchemyError as err:
+        print("=======================" + str(session['uid']))
+        print("=======================" + str(err.__dict__['orig']))
+        # return render_template('error.html', msg = str(err.__dict__['orig']))
+    return redirect('/')
 
 if __name__ == "__main__":
   import click
